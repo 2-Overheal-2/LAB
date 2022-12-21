@@ -1,5 +1,5 @@
 #include "Game.h"
-// П А Т Т Е Р Н   Ф А С А Д
+// пїЅ пїЅ пїЅ пїЅ пїЅ пїЅ пїЅ   пїЅ пїЅ пїЅ пїЅ пїЅ
 void Game::run()
 {
 	std::vector<ObserverLevel*>level;
@@ -10,7 +10,7 @@ void Game::run()
 //	inputlevelgame.get_level_game(context);
 	Field* field;
 	int choose_level;
-	std::cout << "Введите уровень" << std::endl;
+	std::cout << "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ" << std::endl;
 	std::cin >> choose_level;
 	if (choose_level == 1) {
 		LevelContext* context = new LevelContext(new EasyLevel);
@@ -57,10 +57,13 @@ void Game::run()
 	isubject->prefex("[INF]", new CommandGameStart());
 	isubject->notify();
 	Sleep(900);
+    Field save_field=*field;
+    Player player2=*player;
+    WrongTransaction *w=new WrongTransaction(save_field,player2);
 	while (gameover) {
 		fieldView.DrawField(field, player);
 		input->Read(gameover);
-		motionlogic->start(input->getDir(), *field,isubject, player);
+		motionlogic->start(input->getDir(), *field,isubject, player,w);
 		gamelogic.start(*field, *player,gameover,isubject);
 		isubject->notify();
 	}

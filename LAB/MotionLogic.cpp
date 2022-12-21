@@ -1,5 +1,5 @@
 #include "MotionLogic.h"
-void MotionLogic::start(int dir, Field& field, ISubject* i, Player* player) {
+void MotionLogic::start(int dir, Field& field, ISubject* i, Player* player,WrongTransaction *w) {
 	int x, y;
 	std::vector < std::vector < Cell* >> cells= field.matrix();
 	switch (dir) {
@@ -68,18 +68,41 @@ void MotionLogic::start(int dir, Field& field, ISubject* i, Player* player) {
 		}
 		break;
 	case SAVE: {
-		SaveData data = SaveData(&field, player);
-		data.save_cells("cells.txt");
-		data.save_characteristics("char.txt");
-		data.save_position("position.txt");
-		std::cout << "uhegwfhoeugqhoiueqhoG";
+        try {
+            SaveData data = SaveData(&field, player);
+            data.save_cells("cells.txt");
+            data.save_characteristics("char.txt");
+            data.save_position("position.txt");
+        }
+        catch (WrongData e){
+            std::cout<<e.what();
+            field=&w->rollback();
+            player=&w->rollback_player();
+        }
+        catch (WrongWriteFile e){
+            std::cout<<e.what();
+            field=&w->rollback();
+            player=&w->rollback_player();
+        }
 		break;
 	}
 	case LOAD: {
+        try{
 		LoadData load = LoadData(&field, player);
 		load.load_cells("cells.txt");
 		load.load_characteristic("char.txt");
 		load.load_position("position.txt");
+        }
+        catch (WrongData e){
+        std::cout<<e.what();
+        field=&w->rollback_field();
+        player=&w->rollback_player();
+    }
+        catch (WrongReadFile e){
+            std::cout<<e.what();
+            field=&w->rollback();
+            player=&w->rollback_player();
+    }
 		break;
 	}
 	}

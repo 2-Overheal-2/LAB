@@ -21,7 +21,10 @@ Field::Field(const Field& obj)
     this->size = obj.size;
     this->playerX = obj.playerX;
     this->playerY = obj.playerY;
-
+    for (int i=0;i<obj.size;i++)
+        for (int j=0;j<obj.size;j++)
+            this->mat[i][j]=obj.mat[i][j];
+    this->cell=obj.cell;
 }
 Field& Field::operator=(const Field& obj)
 {
@@ -32,6 +35,10 @@ Field& Field::operator=(const Field& obj)
     this->size = obj.size;
     this->playerX = obj.playerX;
     this->playerY = obj.playerY;
+    this->cell=obj.cell;
+    for (int i=0;i<obj.size;i++)
+        for (int j=0;j<obj.size;j++)
+            this->mat[i][j]=obj.mat[i][j];
     return *this;
 }
 Field::Field(Field&& obj)
@@ -39,7 +46,10 @@ Field::Field(Field&& obj)
     std::swap(this->size, obj.size);
     std::swap(this->playerX, obj.playerX);
     std::swap(this->playerY, obj.playerY);
-    std::swap(this->mat, obj.mat);
+    for (int i=0;i<obj.size;i++)
+        for (int j=0;j<obj.size;j++)
+            std::swap(this->mat[i][j], obj.mat[i][j]);
+    std::swap(this->cell,obj.cell);
 }
 
 Field& Field::operator=(Field&& obj)
@@ -48,7 +58,10 @@ Field& Field::operator=(Field&& obj)
         std::swap(this->size, obj.size);
         std::swap(this->playerX, obj.playerX);
         std::swap(this->playerY, obj.playerY);
-        std::swap(this->mat, obj.mat);
+        for (int i=0;i<obj.size;i++)
+            for (int j=0;j<obj.size;j++)
+                std::swap(this->mat[i][j], obj.mat[i][j]);
+        std::swap(this->cell,obj.cell);
     }
     return *this;
 }
