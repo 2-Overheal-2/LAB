@@ -18,6 +18,7 @@
 #include "InputLevelGame.h"
 #include "LevelContext.h"
 #include "FieldCheck.h"
+#include "WrongTransaction.h"
 
 class Game
 {
